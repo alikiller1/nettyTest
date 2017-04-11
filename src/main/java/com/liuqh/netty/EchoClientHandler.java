@@ -1,21 +1,27 @@
 package com.liuqh.netty;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.CharsetUtil;
+import io.netty.util.ReferenceCountUtil;
+
+import java.io.UnsupportedEncodingException;
 
 @Sharable
-public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
+public class EchoClientHandler extends ChannelHandlerAdapter {
 	/**
 	 * 此方法会在连接到服务器后被调用
+	 * @throws UnsupportedEncodingException 
 	 */
 	@Override
-	public void channelActive(ChannelHandlerContext ctx) {
+	public void channelActive(ChannelHandlerContext ctx) throws UnsupportedEncodingException {
 		System.out.println("client channelActive");
-		ctx.writeAndFlush(Unpooled.copiedBuffer("Netty rocks!", CharsetUtil.UTF_8));
+		String sendMsg="ha ha ha ";
+		ctx.writeAndFlush(new MyMessage(new MyHead(sendMsg.getBytes("UTF-8").length,1),sendMsg));
+		/*ctx.writeAndFlush(Unpooled.copiedBuffer("Netty rocks1!", CharsetUtil.UTF_8));
+		ctx.writeAndFlush(Unpooled.copiedBuffer("Netty rocks2!", CharsetUtil.UTF_8));
+		ctx.writeAndFlush(Unpooled.copiedBuffer("Netty rocks3!", CharsetUtil.UTF_8));
+		*/
 	}
 
 	/**
@@ -26,18 +32,19 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 		cause.printStackTrace();
 		ctx.close();
 	}
-	/**
-	 * 接收到服务端的数据调用
-	 */
-	@Override
-	protected void messageReceived(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-		System.out.println("Client messageReceived: " +new String( msg.readBytes(msg.readableBytes()).array(),"UTF-8"));
-	}
+	
 	
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
 		System.out.println("client channelRead--------------");
-		super.channelRead(ctx, msg);
+		MyMessage in = (MyMessage) msg;
+		try {
+			System.out.println("client channelRead: " + in);
+		} finally {
+			// ByteBuf是一个引用计数对象，这个对象必须显示地调用release()方法来释放
+			// or ((ByteBuf)msg).release();
+			ReferenceCountUtil.release(msg);
+		}
 	}
 }
