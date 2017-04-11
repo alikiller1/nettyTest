@@ -3,9 +3,9 @@ package com.liuqh.netty;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.util.CharsetUtil;
 
 @Sharable
@@ -15,7 +15,8 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 	 */
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) {
-		ctx.write(Unpooled.copiedBuffer("Netty rocks!", CharsetUtil.UTF_8));
+		System.out.println("client channelActive");
+		ctx.writeAndFlush(Unpooled.copiedBuffer("Netty rocks!", CharsetUtil.UTF_8));
 	}
 
 	/**
@@ -31,7 +32,7 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 	 */
 	@Override
 	protected void messageReceived(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-		System.out.println("Client received: " + ByteBufUtil.hexDump(msg.readBytes(msg.readableBytes())));
+		System.out.println("Client messageReceived: " +new String( msg.readBytes(msg.readableBytes()).array(),"UTF-8"));
 	}
 
 }

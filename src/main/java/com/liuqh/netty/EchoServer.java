@@ -1,14 +1,14 @@
 package com.liuqh.netty;
 
-import java.net.InetSocketAddress;
-
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;  
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+
+import java.net.InetSocketAddress;
 public class EchoServer {  
     private static final int port = 8080;  
     public void start() throws InterruptedException {  
@@ -39,5 +39,5 @@ public class EchoServer {
         } catch (InterruptedException e) {  
             e.printStackTrace();  
         }  
-    }  
 }  
+}
