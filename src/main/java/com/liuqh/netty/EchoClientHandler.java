@@ -1,7 +1,6 @@
 package com.liuqh.netty;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
@@ -34,5 +33,11 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 	protected void messageReceived(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
 		System.out.println("Client messageReceived: " +new String( msg.readBytes(msg.readableBytes()).array(),"UTF-8"));
 	}
-
+	
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg)
+			throws Exception {
+		System.out.println("client channelRead--------------");
+		super.channelRead(ctx, msg);
+	}
 }

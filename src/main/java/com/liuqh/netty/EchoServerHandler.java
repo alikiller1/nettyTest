@@ -13,11 +13,13 @@ import io.netty.util.CharsetUtil;
 @Sharable//注解@Sharable可以让它在channels间共享  
 public class EchoServerHandler extends  ChannelHandlerAdapter{  
 	
+	@Override
     public void channelReadComplete(ChannelHandlerContext ctx) {   
         ctx.writeAndFlush(Unpooled.EMPTY_BUFFER) //flush掉所有写回的数据  
         .addListener(ChannelFutureListener.CLOSE); //当flush完成后关闭channel  
         System.out.println("server channelReadComplete--------------");
-    }   
+    } 
+    @Override
     public void exceptionCaught(ChannelHandlerContext ctx,Throwable cause) {   
         cause.printStackTrace();//捕捉异常信息  
         ctx.close();//出现异常时关闭channel   
