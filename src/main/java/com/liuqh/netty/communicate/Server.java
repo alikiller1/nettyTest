@@ -33,7 +33,7 @@ public class Server {
 						sc.pipeline().addLast(
 								MarshallingCodeCFactory
 										.buildMarshallingEncoder());
-						sc.pipeline().addLast(new ReadTimeoutHandler(3));
+						//sc.pipeline().addLast(new ReadTimeoutHandler(3));
 						sc.pipeline().addLast(new ServerHandler());
 					}
 				});
