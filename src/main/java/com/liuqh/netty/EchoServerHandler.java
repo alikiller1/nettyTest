@@ -38,9 +38,8 @@ public class EchoServerHandler extends ChannelHandlerAdapter {
 		 * String(read.array(),"UTF-8"));
 		 */
 
-		MyMessage in = (MyMessage) msg;
 		try {
-			System.out.println("server channelRead: " + in);
+			System.out.println("server channelRead: " + msg);
 		} finally {
 			// ByteBuf是一个引用计数对象，这个对象必须显示地调用release()方法来释放
 			// or ((ByteBuf)msg).release();

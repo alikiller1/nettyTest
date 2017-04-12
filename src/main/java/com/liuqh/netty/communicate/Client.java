@@ -90,7 +90,7 @@ public class Client {
 				request.setName("pro" + i);
 				request.setRequestMessage("数据信息" + i);
 				cf.channel().writeAndFlush(request);
-				TimeUnit.SECONDS.sleep(4);
+				//TimeUnit.SECONDS.sleep(4);
 			}
 
 			cf.channel().closeFuture().sync();
@@ -123,13 +123,7 @@ public class Client {
 			System.out.println("断开连接,主线程结束..");
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				getInstance().group.shutdownGracefully().sync();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		} 
 	}
 
 }
